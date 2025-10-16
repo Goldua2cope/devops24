@@ -1,8 +1,11 @@
 [all:vars]
 ansible_user=deploy
-ansible_ssh_private_key_file=\home\administrator\Vagrant\deploy_key
+ansible_ssh_private_key_file=/home/administrator/Vagrant/deploy_key
 
 [db]
 192.168.121.179
 [web]
 192.168.121.234
+
+[controller]
+administrator-Precision-T1650 ansible_connection=local

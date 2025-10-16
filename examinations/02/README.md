@@ -32,7 +32,7 @@ Each row in this file either contains a section name within brackets.
 is given.
 
 `host_key_checking` is a mechanism by which `ssh(1)` checks that a hostname
-has a given set of encryption keys given as an identoty. This is a security
+has a given set of encryption keys given as an identity. This is a security
 mechanism used to avoid spoofing and man-in-the-middle attacks out in the
 real world. Here, we disable it, otherwise we'll go crazy every time we
 destroy or create the Vagrant hosts with new keys.
@@ -111,10 +111,12 @@ incompatibilities.
 ## QUESTION A
 
 What happens if you run `ansible-inventory --list` in the directory you created above?
+    - It shows all hosts available in the inventory and includes information about ip-address, keyfile, user and host group
 
 ## QUESTION B
 
 What happens if you run `ansible-inventory --graph` in the directory you created above?
+    - It shows the ip address and grouping of all hosts
 
 ## QUESTION C
 
@@ -131,6 +133,7 @@ Now run:
 Study the output of this command.
 
 What does the `ansible_connection=local` part mean?
+    - It tells ansible to connect to the localhost for this server
 
 ## BONUS QUESTION
 
