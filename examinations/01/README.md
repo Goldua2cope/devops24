@@ -52,3 +52,7 @@ Can you run a command on a remote host via SSH? How?
     '''
     ssh deploy@192.168.121.179 cat ~/.ssh/authorized_keys
     '''
+
+
+### Useful commands:
+sudo virt net-dhcp-leases vagrant-libvirt

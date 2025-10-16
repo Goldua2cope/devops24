@@ -1,0 +1,8 @@
+---
+- name: This is a playbook
+  hosts: all
+  connection: local
+  tasks:
+    - name: Say hello world
+      ansible.builtin.debug:
+        msg: Hello, world 
