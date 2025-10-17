@@ -155,4 +155,5 @@ In your Ansible working directory where the `ansible.cfg' is, run
 
 You should get a pager displaying all available configuration values. How does it differ
 from when you run the same command in your usual home directory?
+    - Running the command inside my working directory, I see the settings I have in ansible.cfg.
 
