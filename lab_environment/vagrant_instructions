@@ -1,0 +1,79 @@
+Vagrant Instructions
+
+First boot machines with Vagrant
+
+Download the file from the course homepage called "Vagrantfile". These instructions assume that you are running Ubuntu or a similar Ubuntu distribution. Others work, but with all the different distributions, it is not possible to document the exact procedure for every distribution. Hence, the distribution that is most often used by beginners was chosen. If you are running a different distribution and have problems, ask the teacher and it can be investigated separately.
+
+Create a directory on the computer, enter the directory and place the file inside
+
+Make sure the qemu-system-common package is installed along with vagrant and some other packages:
+
+$ sudo apt install qemu-system-common vagrant
+
+$ sudo apt install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils virtinst virt-manager
+
+Installerar också ruby-dev, build-essential och nfs-kernel-server
+
+Reboot now.
+
+Enter the directory and run the following commands (may need sudo permissions depending on how your system handles privilege escalation):
+
+$ vagrant up
+
+Access to Vagrant machines
+
+To make it easier for Ansible to access the two vagrant machines, you should run a command to list the machines as known.
+
+When running `vagrant up', a message will appear twice that looks almost exactly like below:
+
+    webb: deploy:x:1001:1001:deploy:/home/deploy:/bin/bash
+    webb: 2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    webb:     link/ether 52:54:00:b5:10:29 brd ff:ff:ff:ff:ff:ff
+    webb:     altname enp0s5
+    webb:     altname ens5
+    webb:     inet 192.168.121.59/24 brd 192.168.121.255 scope global dynamic noprefixroute eth0
+    webb:        valid_lft 1960sec preferred_lft 1960sec
+    webb:     inet6 fe80::5054:ff:feb5:1029/64 scope link noprefixroute
+    webb:        valid_lft forever preferred_lft forever
+
+Take the two ip addresses for your machines (web, and database) and use them in the command below
+
+ssh-keyscan -t rsa 192.168.121.59 192.168.121.60 >> ~/.ssh/known_hosts
+
+Replace the IP:s with the two ip addresses you got when you ran `vagrant up`.
+This makes ssh recognize and trust that your vagrant machines are your vagrant machines.
+
+To check which addresses Vagrant distributed, you can run:
+
+sudo virsh net-dhcp-leases --network vagrant-libvirt
+
+A user deploy is automatically created on the vagrant machines (they are called web and database). This user has sudo full sudo rights on the vagrant machines without a password. A key pair (public/private key pair) for the deploy user has also been created to be able to log in. The private key has been stored in your user's .ssh directory and is named deploy_key and has no password. Note: This is set up for ease of testing and working. Definitely don't use a setup like this in a production environment!
+
+To install ansible simply run:
+
+$ sudo apt install ansible
+
+To test that Ansible is working and that you have done everything correctly so far, you can run the command:
+
+$ ansible -i <ip web>,<ip databas> all -u deploy --private-key </path/to/>deploy_key -m setup
+
+You should get lots of green text in your command prompt listing keys and values, for example "ansible_system": "Linux".
+Trouble shooting
+
+In case of problems, try running the following:
+
+    sudo apt purge -y libvirt-dev libvirt-bin vagrant
+
+    sudo apt autoremove
+
+    sudo apt install -y libvirt-dev libvirt-bin vagrant
+
+    vagrant up (från vagrant-katalogen du zippade upp)
+
+If that doesn't work try running the following and see if it succeeds:
+
+    vagrant box add cloud-image/almalinux-10
+
+    vagrant plugin install vagrant-libvirt
+
+    vagrant plugin install vagrant-share
