@@ -1,5 +1,5 @@
 ---
-- name: This is a playbook
+- name: Test Ansible playbook
   hosts: all
   connection: local
   tasks:
