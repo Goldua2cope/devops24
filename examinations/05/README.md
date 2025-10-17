@@ -21,6 +21,8 @@ Or, if you prefer, you can install the collection directly with
 
     $ ansible-galaxy collection install community.crypto
 
+ - Check with : ansible-galaxy collection list | grep crypto
+
 # HTTPS configuration in nginx
 
 The default nginx configuration file suggests something like the following to be added to its
@@ -56,6 +58,7 @@ working directory, with the contents intact.
 
 Now, we will create an Ansible playbook that copies this file via the `ansible.builtin.copy` module
 to `/etc/nginx/conf.d/https.conf`.
+    - We commented out http2 since it isn't supported in almalinux-9
 
 # QUESTION A
 
@@ -73,8 +76,10 @@ The output from the playbook run contains something that looks suspiciously like
 a number of keys and values that come from the output of the Ansible module.
 
 What does the output look like the first time you run this playbook?
+    - on the first run it checks for file corruption with checksum md5sum
 
 What does the output look like the second time you run this playbook?
+    - the second output is the same as the first one, but no md5sum checksum and no changes made since it recognizes the existens of the file 
 
 # QUESTION B
 
@@ -114,12 +119,18 @@ Again, these addresses are just examples, make sure you use the IP of the actual
 Note also that `curl` needs the `--insecure` option to establish a connection to a HTTPS server with
 a self signed certificate.
 
+    - To check if service is available: "sudo systemctl list-unit-files --type=service --state=enabled | grep nginx" OR "sudo systemctl list-units --type=service --all | grep nginx"
+
 # QUESTION C
 
 What is the disadvantage of having a task that _always_ makes sure a service is restarted, even if there is
 no configuration change?
+    - Unneccessary downtime
+    - Longer runtime especially if done on several servers
 
 # BONUS QUESTION
 
 There are at least two _other_ modules, in addition to the `ansible.builtin.service` module that can restart
 a `systemd` service with Ansible. Which modules are they?
+    - ansible.builtin.systemd_service module & ansible.builtin.sysvinit module
+    - the difference between these two and the service module is that the later acts as proxy to underlying service nabager module

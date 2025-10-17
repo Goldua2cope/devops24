@@ -120,10 +120,16 @@ Run the exact same playbook again and study the output. What is the difference?
 ## QUESTION A
 
 What does the `ansible.builtin.debug` module actually do?
+    - This module prints statements during execution
 
 ## QUESTION B
 
 What is the variable 'ansible_facts' and where does it come from?
+    - It is a return value in form of a dictionary
+    - The data comes from the "ansible-facts" variable
+    - What facts are collected during a play's fact gathering stage depends on the ANSIBLE_FACTS_MODULES
+    - We can see all facts of a node by running the command: "ansible <hostname> -m ansible.builtin.setup"
+    - fact gathering can be turned on or off 
 
 ## QUESTION C
 
@@ -133,6 +139,8 @@ next time we run the playbook. This is a concept called _idempotency_.
 How do we now remove the software we installed through the playbook above? Make the
 playbook remove the exact same software we previously installed. Call the created
 playbook `03-uninstall-software.yml`.
+    - "ansible-playbook 03-uninstall-software.yml --check --verbose"
+    - then i removed the "--check" part for the actual removal
 
 ## BONUS QUESTION
 
@@ -140,8 +148,12 @@ What happens when you run `ansible-playbook` with different options?
 
 Explain what each of these options do:
 * --verbose, -vv, -vvv, -vvvv
+    - With "v" adds verbosity to the debug messages that the ansible will print out
 * --check
+    - It test a task first if the module supports check mode
+    - It the module doesn't support check mode, ansible will not print any message if the task would have worked or not
 * --syntax-check
+    - performs a syntax check on the playbook, but do not execute it
 
 ## Study Material & Documentation
 

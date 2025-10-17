@@ -111,12 +111,12 @@ incompatibilities.
 ## QUESTION A
 
 What happens if you run `ansible-inventory --list` in the directory you created above?
-    - It shows all hosts available in the inventory and includes information about ip-address, keyfile, user and host group
+    - It shows all hosts available in the inventory and includes host information such as ip-address, keyfile, user, host group, etc.
 
 ## QUESTION B
 
 What happens if you run `ansible-inventory --graph` in the directory you created above?
-    - It shows the ip address and grouping of all hosts
+    - It shows host information as a graph and includes ip address, grouping of all hosts, etc.
 
 ## QUESTION C
 
@@ -133,7 +133,7 @@ Now run:
 Study the output of this command.
 
 What does the `ansible_connection=local` part mean?
-    - It tells ansible to connect to the localhost for this server
+    - It tells ansible to connect to the localhost
 
 ## BONUS QUESTION
 
@@ -155,5 +155,5 @@ In your Ansible working directory where the `ansible.cfg' is, run
 
 You should get a pager displaying all available configuration values. How does it differ
 from when you run the same command in your usual home directory?
-    - Running the command inside my working directory, I see the settings I have in ansible.cfg.
+    - Running the command inside my working directory takes into account the settings I have configured in ansible.cfg 
 

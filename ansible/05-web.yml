@@ -1,0 +1,27 @@
+---
+- name: Copy nginx config file to webserver
+  hosts: web
+  become: true
+  tasks:
+    - name: Copy https.conf
+      ansible.builtin.copy:
+        src: ./https.conf
+        dest: /etc/nginx/conf.d/https.conf
+        mode: "0744"
+        owner: root
+
+    - name: Copy https.conf (testa conditional with when)
+      when: false
+      ansible.builtin.copy:
+        src: ./https.conf
+        dest: /etc/nginx/conf.d/https.conf
+        mode: "0744"
+        owner: root
+
+    - name: Restart nginx to use the new config file
+      ansible.builtin.service:
+        name: nginx.service
+        state: restarted
+        enabled: true
+
+

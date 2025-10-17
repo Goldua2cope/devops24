@@ -1,0 +1,11 @@
+---
+- name: testing conditional with when
+  hosts: web
+  tasks:
+    - name: ls command
+      ansible.builtin.command: ls /
+      register: result
+
+    - name: print result
+      ansible.builtin.debug:
+        var: result.stdout

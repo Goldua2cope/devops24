@@ -18,6 +18,12 @@ certificates (such as the one we created earlier). This is normal, and
 since we were the ones creating the certificate, we can just add an
 exception for accepted certs, or simply use the http:// URL.
 
+'''
+Firefox : 
+  Go to URL https://localhost:<port_no> and add security exception to allow connections. 
+  If connection error still comes, Go to URL about:config and set value for security.mixed_content.block_active_content to false and security.mixed_content.block_display_content to true.
+'''
+
 We will create a _virtual host_ on our web server, that serves different
 content depending on which address it is called by via web browsers.
 
