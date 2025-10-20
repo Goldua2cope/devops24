@@ -124,6 +124,8 @@ HINTS:
 * If you want to serve files under a non-standard directory (such as the one we create above), we must
   also set the correct SELinux security context type on the directory and files. The context in question
   in this case should be `httpd_sys_content_t` for the `/var/www/example.internal/html/` directory.
+    - Good to set right security context for a file that one wishes to expose to the public 
+    - See "ls -lZ <path/to/file>"
 
 # QUESTION B
 
@@ -172,6 +174,8 @@ See https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_conditional
 There are several ways to accomplish this, and there is no _best_ way to do this with what we've done so far.
 
 Is this a good way to handle these types of conditionals? What do you think?
+  - It works in this case really well, because we are looking for changes in the example.internal.conf & html file 
+
 
 # BONUS QUESTION
 
@@ -183,3 +187,7 @@ would you like the flow to work?
 
 Describe in simple terms what your preferred task flow would look like, not necessarily implemented in
 Ansible, but in general terms.
+  - I would group my tasks in a way that minimal amount of restarts are needed 
+    - All tasks that don't need immediate restart of the service are executed first like configuration tasks
+    - Do reloads instead when possible
+    - If possible do only one restarts per service at the end

@@ -9,7 +9,7 @@
         dest: /etc/nginx/conf.d/example.internal.conf
         mode: "0755"
         owner: root
-      register: result
+      register: result_conf
 
     - name: Create content directory
       ansible.builtin.file:
@@ -24,9 +24,10 @@
         dest: /var/www/example.internal/html/index.html
         mode: "0644"
         owner: root
+      register: result_html
 
     - name: Restart nginx to use the new config file
-      when: result is changed
+      when: result_conf is changed or result_html is changed
       ansible.builtin.service:
         name: nginx.service
         state: restarted
