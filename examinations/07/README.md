@@ -31,3 +31,7 @@ service is started and is running?
 # BONUS QUESTION
 
 How many different ways can use come up with to verify that the `mariadb` service is running?
+
+#### Vault:
+  - ansible-vault create mariadbpw.yml
+  - ansible-playbook 07-mariadb.yml --ask-vault-pass
