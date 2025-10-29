@@ -31,3 +31,9 @@ to authenticate as root:
 
 # Documentation and Examples
 https://docs.ansible.com/ansible/latest/collections/community/mysql/index.html
+
+
+-  #### To check if user & databases exist inside VM:
+    - SELECT user FROM webappdb.user;
+    - SELECT CURRENT_USER();
+    - SHOW DATABASES;
