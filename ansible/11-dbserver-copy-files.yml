@@ -1,0 +1,25 @@
+---
+- name: Transfer files to dbserver
+  hosts: db
+  vars:
+    wd: /home/deploy/files
+  tasks: 
+    - name: Ensure /files directory exists
+      ansible.builtin.file:
+        path: "{{ wd }}"
+        owner: deploy
+        group: deploy
+        mode: "0744"
+        state: directory
+      register: result
+
+    - name: Copy .md files with matching patterns
+      become: true
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "{{ wd }}"
+        owner: deploy
+        group: deploy
+        mode: "0644"
+      with_fileglob:
+        - "files/*.md"

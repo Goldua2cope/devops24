@@ -68,3 +68,8 @@ Add the real names of the users we added earlier to the GECOS field of each acco
 * [ansible.builtin.fileglob](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/fileglob_lookup.html)
 * https://docs.ansible.com/ansible/latest/reference_appendices/faq.html#how-do-i-generate-encrypted-passwords-for-the-user-module
 
+
+- #### Question to teacher:
+    - ansible all -i localhost, -m debug -a "msg={{ 'Linux4Ever' | password_hash('sha512', 'mysecretsalt') }}"
+        - why "all -i localhost needed"
+

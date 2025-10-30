@@ -1,0 +1,23 @@
+---
+# vars file for webserver
+
+# Copy: "{{ filedir }}"
+filedir: /home/administrator/devops24/ansible/
+
+# Copy: "{{ web_users }}"
+web_users:
+  - name: "alovelance"
+    groups: "wheel,video,audio"
+    gecos: "Ada Lovelace"
+  - name: "aturing"
+    groups: "tape"
+    gecos: "Alan Turing"
+  - name: "edijkstra"
+    groups: "tcpdump"
+    gecos: "Edsger W. Dijkstra" 
+  - name: "ghopper"
+    groups: "wheel,audio"
+    gecos: "Grace Hopper"
+
+# Copy: "{{ user_password }}"
+user_password: "$6$rounds=656000$mysecretsalt$0kxgm8HEMKupwaiqsqyATObY7jRM5oavpLGUE4vZvqSbK24mUDZqHPaRl9hybNYG5Oi1pIaJH9.vtHl4f9pks0"

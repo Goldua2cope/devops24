@@ -1,0 +1,46 @@
+---
+# tasks file for webserver
+- name: Copy webserver conf file
+  ansible.builtin.copy:
+    src: "{{ filedir }}https.conf"
+    dest: /etc/nginx/conf.d/https.conf
+    mode: "0744"
+    owner: root
+
+- name: Render second webserver config file from jinja2 template
+  ansible.builtin.template:
+    src: "{{ filedir }}/templates/example.internal.conf.j2"
+    dest: /etc/nginx/conf.d/example.internal.conf
+    mode: "0755"
+    owner: root
+
+- name: Create content directory
+  ansible.builtin.file:
+    path: /var/www/example.internal/html/
+    state: directory
+    mode: "0755"
+    owner: root
+
+- name: Copy over index.html
+  ansible.builtin.copy:
+    src: "{{ filedir }}index.html"
+    dest: /var/www/example.internal/html/index.html
+    mode: "0644"
+    owner: root
+
+- name: Restart nginx to use the new config file
+  ansible.builtin.service:
+    name: nginx.service
+    state: restarted
+    enabled: true
+
+- name: Create users
+  ansible.builtin.user:
+    append: true
+    name: "{{ item.name }}"
+    groups: "{{ item.groups }}"
+    comment: "{{ item.gecos }}"
+    password: "{{ user_password }}"
+  loop: "{{ web_users }}"
+  loop_control:
+    label: "{{ item.name }} created and added to {{ item.name }}"

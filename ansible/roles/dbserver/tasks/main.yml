@@ -1,0 +1,51 @@
+---
+# tasks file for dbserver
+
+- name: Ensure MariaDB-server & python3-PyMySQL is installed
+  ansible.builtin.package:
+    name: 
+      - mariadb-server
+      - python3-PyMySQL
+    state: latest
+
+- name: Start mariadb at boot
+  ansible.builtin.service:
+    name: mariadb
+    state: started
+    enabled: true
+
+- name: Create Database "webappdb"
+  ansible.builtin.mysql_db:
+    login_unix_socket: "{{ socket_location }}"
+    check_implicit_admin: true
+    name: webappdb
+    state: present
+
+- name: Create Databseuser "webappuser"
+  ansible.builtin.mysql_user:
+    login_unix_socket: "{{ socket_location }}"
+    check_implicit_admin: true
+    name: webappuser
+    password: "{{ mysql_user_password }}"
+    priv: "webappdb.*:ALL"
+    state: present
+
+- name: Ensure /files directory exists
+  ansible.builtin.file:
+    path: "{{ wd }}"
+    owner: deploy
+    group: deploy
+    mode: "0744"
+    state: directory
+  register: result
+  
+- name: Copy .md files with matching patterns
+  become: true
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ wd }}"
+    owner: deploy
+    group: deploy
+    mode: "0644"
+  with_fileglob:
+    - "{{ filedir }}/files/*.md"

@@ -1,0 +1,5 @@
+---
+# vars file for dbserver
+socket_location: /var/lib/mysql/mysql.sock
+wd: /home/deploy/files
+filedir: /home/administrator/devops24/ansible/
