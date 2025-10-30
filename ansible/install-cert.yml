@@ -3,19 +3,19 @@
   hosts: web
   become: true
   tasks:
-    # - name: Ensure the /etc/pki/nginx directory exists
-    #   ansible.builtin.file:
-    #     path: /etc/pki/nginx
-    #     state: directory
-    #     mode: "0755"
-    #     owner: root
+    - name: Ensure the /etc/pki/nginx directory exists
+      ansible.builtin.file:
+        path: /etc/pki/nginx
+        state: directory
+        mode: "0755"
+        owner: root
 
-    # - name: Ensure we have a /etc/pkig/nginx/private directory
-    #   ansible.builtin.file:
-    #     path: /etc/pki/nginx/private
-    #     state: directory
-    #     mode: "0700"
-    #     owner: root
+    - name: Ensure we have a /etc/pkig/nginx/private directory
+      ansible.builtin.file:
+        path: /etc/pki/nginx/private
+        state: directory
+        mode: "0700"
+        owner: root
 
     - name: Ensure we have necessary software installed
       ansible.builtin.package:

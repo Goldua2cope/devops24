@@ -1,0 +1,106 @@
+---
+- name: Install Node-Exporter
+  hosts: all
+  become: true
+  vars:
+    node_exporter_version: "1.10.2"
+    node_exporter_bin: /usr/sbin/node_exporter
+    node_exporter_user: node_exporter
+    node_exporter_group: "{{ node_exporter_user }}"
+    node_exporter_dir_conf: /etc/sysconfig/node_exporter
+  tasks:
+    - name: Create node exporter user
+      ansible.builtin.user:
+        name: "{{ node_exporter_user }}"
+        shell: /sbin/nologin
+        system: true
+        create_home: false
+
+    - name: Create note export config dir
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ node_exporter_user }}"
+        group: "{{ node_exporter_group }}"
+        mode: "0755"
+        recurse: true
+      loop:
+        - /etc/sysconfig/node_exporter
+        - /var/lib/node_exporter/textfile_collector
+
+    # - name: Download node exporter binary
+    #   ansible.builtin.get_url:
+    #     url: https://github.com/prometheus/node_exporter/releases/download/v1.10.2/node_exporter-1.10.2.linux-amd64.tar.gz
+    #     dest: /tmp/
+    #     mode: "0644"
+
+
+    # - name: Unzip node exporter
+    #   ansible.builtin.unarchive:
+    #     remote_src: true
+    #     src: /tmp/node_exporter-1.10.2.linux-amd64.tar.gz
+    #     dest: /tmp/
+    #     validate_certs: false
+
+    - name: XXX
+      ansible.builtin.copy:
+        src: node_exporter
+        dest: "{{ node_exporter_bin }}"
+        owner: "{{ node_exporter_user }}"
+        group: "{{ node_exporter_group }}"
+        mode: "0755"
+
+    # - name: Move binary to final destination
+    #   ansible.builtin.copy:
+    #     remote_src: true
+    #     src: /tmp/node_exporter-1.10.2.linux-amd64/node_exporter
+    #     dest: "{{ node_exporter_bin }}"
+    #     owner: "{{ node_exporter_user }}"
+    #     group: "{{ node_exporter_group }}"
+    #     mode: "0755"
+
+    # - name: Clean
+    #   ansible.builtin.file:
+    #     path: /tmp/node_exporter-1.10.2.linux-amd64
+    #     state: absent
+
+    - name: Copy service files
+      ansible.builtin.copy:
+        src: "/home/administrator/devops24/ansible/{{ item }}"
+        dest: /etc/systemd/system/
+        owner: root
+        group: root
+        mode: "0644"
+      loop:
+        - node_exporter.service
+        - node_exporter.socket
+      notify: Restart and reload node exporter
+
+    - name: Copy sysconfig file
+      ansible.builtin.copy:
+        src: /home/administrator/devops24/ansible/sysconfig.node_exporter
+        dest: /etc/sysconfig/node_exporter
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Reload and restart node_exporter
+
+    - name: Execute handlers now
+      ansible.builtin.meta: flush_handlers
+
+    - name: Enable Firewall rules on dbserver
+      ansible.posix.firewalld:
+        # service: prometheus-node-exporter
+        port: 9100/tcp
+        state: enabled
+        immediate: true
+        permanent: true
+      notify: Restart and reload node exporter
+
+  handlers:
+    - name: Restart and reload node exporter
+      ansible.builtin.systemd:
+        name: node_exporter.service
+        state: restarted
+        daemon_reload: true
+        enabled: true

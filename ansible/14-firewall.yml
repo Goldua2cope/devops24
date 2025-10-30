@@ -1,0 +1,36 @@
+---
+- name: Firewall Configuration
+  hosts: all
+  become: true
+  tasks:
+    - name: Install required packages
+      ansible.builtin.package:
+        name:
+          - firewalld
+          - python3-firewall
+        state: present
+
+    - name: Started firewall service
+      ansible.builtin.service:
+        name: firewalld
+        enabled: true
+        state: started
+
+    - name: Enable Firewall rules on webserver
+      when: inventory_hostname == "web"
+      ansible.posix.firewalld:
+        service: "{{ item }}"
+        state: enabled
+        immediate: true
+        permanent: true
+      loop:
+        - http
+        - https
+
+    - name: Enable Firewall rules on dbserver
+      when: inventory_hostname == "db"
+      ansible.posix.firewalld:
+        service: mysql
+        state: enabled
+        immediate: true
+        permanent: true
