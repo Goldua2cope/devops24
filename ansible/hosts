@@ -3,7 +3,7 @@ ansible_user=deploy
 ansible_ssh_private_key_file=/home/administrator/Vagrant/deploy_key
 
 [db]
-db ansible_host=192.168.121.179
+dbsrv ansible_host=192.168.121.217
 
 [web]
-web ansible_host=192.168.121.234
+websrv ansible_host=192.168.121.17

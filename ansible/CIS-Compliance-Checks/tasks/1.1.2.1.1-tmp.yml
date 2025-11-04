@@ -1,0 +1,4 @@
+---
+- name: Print
+  ansible.builtin.debug:
+    var: ansible_facts.mounts

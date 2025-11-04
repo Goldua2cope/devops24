@@ -17,7 +17,7 @@
         state: started
 
     - name: Enable Firewall rules on webserver
-      when: inventory_hostname == "web"
+      when: inventory_hostname == "websrv"
       ansible.posix.firewalld:
         service: "{{ item }}"
         state: enabled
@@ -28,7 +28,7 @@
         - https
 
     - name: Enable Firewall rules on dbserver
-      when: inventory_hostname == "db"
+      when: inventory_hostname == "dbsrv"
       ansible.posix.firewalld:
         service: mysql
         state: enabled

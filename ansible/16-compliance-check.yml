@@ -1,0 +1,6 @@
+---
+- name: Security Compliance Checks
+  hosts: web
+  become: true
+  roles: 
+    - CIS-Compliance-Checks
