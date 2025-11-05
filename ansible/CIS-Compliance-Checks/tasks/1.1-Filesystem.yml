@@ -1,0 +1,70 @@
+---
+# Separating filesystems allows applying additional mount options such as noexec, nodev and nosuid
+# & prevent resource exhaustion
+- name: 1.1.2.1.1 - Check if /tmp is a separate partition
+  ansible.builtin.assert:
+    # Condition: if /tmp is a mounting point & has a valid device
+    that: 
+      - "'/tmp' in mount_list"
+      - tmp_device is regex("/dev/|tmpfs")
+    success_msg: 
+      - "OK: 1.1.2.1.1"
+      - "/tmp is separately mounted on: {{ tmp_device }}"
+    fail_msg: 
+      - "FAIL: 1.1.2.1.1"
+      - "/tmp is not separately mounted"
+  ignore_errors: true
+  
+
+#### Test area:
+
+# - name: Find mounts
+#   ansible.builtin.debug:
+#     var: ansible_facts.mounts
+
+# - name: Print list of mounting points
+#   ansible.builtin.debug:
+#     msg: "{{ ansible_mounts | map(attribute='mount') }}"
+
+# - name: Print device of mount /vagrant
+#   ansible.builtin.debug:
+#     msg: "{{ ansible_mounts | selectattr('mount', '==', '/vagrant') | map(attribute='device') }}"
+
+# - name: Print /tmp mount info
+#   ansible.builtin.debug:
+#     msg: "{{ ansible_mounts | selectattr('mount', '==', '/tmp') }}"
+
+# - name: Print type of output
+#   ansible.builtin.debug:
+#     msg: "{{ ansible_mounts | selectattr('mount', '==', '/tmp') | type_debug }}"
+
+# - name: Print /tmp mount info
+#   ansible.builtin.debug:
+#     msg: "{{ ansible_mounts | selectattr('mount', '==', '/tmp') | length }}"
+
+# - name: Check if /tmp is a separate partition
+#   ansible.builtin.assert:
+#     that: tmp_factsL | int > 0
+#     success_msg: 
+#       - "OK: 1.1.2.1.1"
+#       - "/tmp is separately mounted on: {{ tmp_device }}"
+#     fail_msg: 
+#       - "FAIL: 1.1.2.1.1"
+#       - "/tmp is not separately mounted"
+
+# - name: test assert 2 
+#   ansible.builtin.assert:
+#     that: "'/vagrant' in mount_list"
+#     success_msg: 
+#       - "OK: 1.1.2.1.1"
+#       - "/tmp is separately mounted on: {{ tmp_device }}"
+#     fail_msg: 
+#       - "FAIL: 1.1.2.1.1"
+#       - "/tmp is not separately mounted"
+
+- name: Print
+  debug:
+    # msg: 
+    # - "{{ tmp_device }}"
+    # - "{{ tmp_device is regex('dev/|tmpfs$') }}"
+    var: tmp_device

@@ -1,4 +1,7 @@
 ---
-- name: Import 1.1.2.1.1-tmp
-  import_tasks: 1.1.2.1.1-tmp.yml
+# - name: Import 1.1-Filesystem
+#   import_tasks: 1.1-Filesystem.yml
+
+- name: Import 1.2-Package-Management
+  import_tasks: 1.2-Package-Management.yml
     

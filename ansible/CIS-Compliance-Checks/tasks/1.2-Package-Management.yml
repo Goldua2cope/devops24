@@ -1,0 +1,31 @@
+---
+# 1. Find keys: rpm -qa gpg-pubkey
+# 2. Find repos: grep -r gpgkey /etc/yum.repos.d/*
+# - name: 1.2.1.1
+
+
+# - name: check for telnet-server
+#   ansible.builtin.assert:
+#     fail_msg: telnet-server package is installed
+#     success_msg: telnet-server package is not installed
+#     that: "'telnet-server' not in ansible_facts.packages"
+
+
+- name: Gather the rpm package facts
+  package_facts:
+    manager: auto
+
+- name: Print the rpm package facts
+  debug:
+    var: ansible_facts.packages
+
+rpm {-q|--query} [select-options] [query-options]
+qo: --info --qf(queryformat) -l (list?)
+
+gpg-pubkey-b86b3716-61e69f29
+
+wget https://repo.almalinux.org/almalinux/RPM-GPG-KEY-AlmaLinux-9
+
+gpg --show-keys --with-colons
+
+gpg --fingerprint

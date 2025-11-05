@@ -1,4 +1,5 @@
 ---
+# Compliance Check according to CIS-AlmaLinux-OS-9-Benchmark
 - name: Security Compliance Checks
   hosts: web
   become: true

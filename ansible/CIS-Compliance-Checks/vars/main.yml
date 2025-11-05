@@ -1,2 +1,7 @@
 ---
 # vars file for 16-compliance-check
+mount_list: "{{ ansible_mounts | map(attribute='mount') }}"
+tmp_device: "{{ ansible_mounts | selectattr('mount', '==', '/tmp') | map(attribute='device') }}"
+
+# vars for tests:
+# tmp_factsL: "{{ ansible_mounts | selectattr('mount', '==', '/vagrant') | length }}"
