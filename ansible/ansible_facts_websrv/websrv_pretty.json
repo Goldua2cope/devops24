@@ -1,4 +1,5 @@
 {
+  "comment": "ansible web -m debug -a 'var=ansible_facts' >> ansible_facts.json | jq . ansible_facts_web/websrv > ansible_facts_web/websrv_pretty.json",
   "ansible_facts": {
     "ansible_all_ipv4_addresses": [
       "192.168.121.17"

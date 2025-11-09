@@ -42,6 +42,7 @@
 #   ansible.builtin.debug:
 #     msg: "{{ ansible_mounts | selectattr('mount', '==', '/tmp') | length }}"
 
+## vars: tmp_factsL: "{{ ansible_mounts | selectattr('mount', '==', '/vagrant') | length }}"
 # - name: Check if /tmp is a separate partition
 #   ansible.builtin.assert:
 #     that: tmp_factsL | int > 0
@@ -62,9 +63,9 @@
 #       - "FAIL: 1.1.2.1.1"
 #       - "/tmp is not separately mounted"
 
-- name: Print
-  debug:
-    # msg: 
-    # - "{{ tmp_device }}"
-    # - "{{ tmp_device is regex('dev/|tmpfs$') }}"
-    var: tmp_device
+# - name: Print
+#   debug:
+#     msg: 
+#     - "{{ tmp_device }}"
+#     - "{{ tmp_device is regex('dev/|tmpfs$') }}"
+#     var: tmp_device

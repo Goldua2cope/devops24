@@ -1,0 +1,25 @@
+---
+# vars file for 16-compliance-check
+mount_list: "{{ ansible_mounts | map(attribute='mount') }}"
+tmp_device: "{{ ansible_mounts | selectattr('mount', '==', '/tmp') | map(attribute='device') }}"
+
+unnecessary_packages:
+  - package_name: ftp
+    CIS_ID: 2.2.1
+  # NIS client
+  - package_name: ypbind
+    CIS_ID: 2.2.3
+  - package_name: telnet
+    CIS_ID: 2.2.4
+
+unnecessary_services:
+  - package_name: ftp
+    service_name: vsftpd.service
+    CIS_ID: 2.2.7
+  # NIS server
+  - package_name: ypserv
+    service_name: ypserv.service
+    CIS_ID: 2.1.10
+  - package_name: firewalld
+    service_name: firewalld.service
+    CIS_ID: test

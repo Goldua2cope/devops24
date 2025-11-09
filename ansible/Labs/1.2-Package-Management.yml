@@ -28,4 +28,4 @@ wget https://repo.almalinux.org/almalinux/RPM-GPG-KEY-AlmaLinux-9
 
 gpg --show-keys --with-colons
 
-gpg --fingerprint
+gpg --fingerprint 

@@ -1,0 +1,28 @@
+---
+- name: Gather the rpm package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+# SELinux is a Linux kernel security module that allows for access control management
+- name: 1.3.1.1 Check if SELinux is installed
+  ansible.builtin.assert:
+    that: "'libselinux' in ansible_facts.packages"
+    success_msg: SELinux package is installed
+    fail_msg: SELinux package is not installed
+
+- name: 1.3.1.5 Check if SELinux mode is enforcing
+  ansible.builtin.assert:
+    # The config_mode specifies the mode SELinux should run on at boot
+    # The status shows if SELinux is enabled in the kernel 
+    that: 
+      - ansible_facts.selinux.config_mode == "enforcing"
+      - ansible_facts.selinux.status == "enabled"
+    success_msg: SELinux is configured correctly
+    fail_msg: SELinux is configured incorrectly
+
+# SETTroubleshoot service notifies users of SELinux denials through a user-friendly interface and is a unnecessary daemon
+- name: 1.3.1.8 Check if SETTroubleshoot is not installed
+  ansible.builtin.assert:
+    that: "'settroubleshoot' not in ansible_facts.packages"
+    success_msg: SETTroubleshoot package is not installed
+    fail_msg: SETTroubleshoot package is installed

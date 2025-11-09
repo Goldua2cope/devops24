@@ -1,0 +1,57 @@
+---
+# Separating filesystems allows applying additional mount options such as noexec, nodev and nosuid
+# & prevent resource exhaustion
+- name: 1.1.2.1.1 - Check if /tmp is a separate partition
+  ansible.builtin.assert:
+    # Condition: if /tmp is a mounting point & has a valid device
+    that: 
+      - "'/tmp' in mount_list"
+      - tmp_device is regex("/dev/|tmpfs")
+    success_msg: 
+      - "1.1.2.1.1 OK:"
+      - "/tmp is separately mounted on: {{ tmp_device }}"
+    fail_msg: 
+      - "1.1.2.1.1 FAILED:"
+      - "/tmp is not separately mounted"
+  ignore_errors: true
+  
+
+- name: Gather the rpm package facts
+  ansible.builtin.package_facts:
+    manager: auto
+
+# SELinux is a Linux kernel security module that allows for access control management
+- name: 1.3.1.1 Check if SELinux is installed
+  ansible.builtin.assert:
+    that: "'libselinux' in ansible_facts.packages"
+    success_msg: 
+      - "1.3.1.1 OK:"
+      - SELinux package is installed
+    fail_msg: 
+      - "1.3.1.1 FAILED:"
+      - SELinux package is not installed
+
+- name: 1.3.1.5 Check if SELinux mode is enforcing
+  ansible.builtin.assert:
+    # The config_mode specifies the mode SELinux should run on at boot
+    # The status shows if SELinux is enabled in the kernel 
+    that: 
+      - ansible_facts.selinux.config_mode == "enforcing"
+      - ansible_facts.selinux.status == "enabled"
+    success_msg: 
+      - "1.3.1.5 OK:"
+      - SELinux is configured correctly
+    fail_msg: 
+      - "1.3.1.5 FAILED:"
+      - SELinux is configured incorrectly
+
+# SETTroubleshoot service notifies users of SELinux denials through a user-friendly interface and is a unnecessary daemon
+- name: 1.3.1.8 Check if SETTroubleshoot is not installed
+  ansible.builtin.assert:
+    that: "'settroubleshoot' not in ansible_facts.packages"
+    success_msg: 
+      - "1.3.1.8 OK:"
+      - SETTroubleshoot package is not installed
+    fail_msg: 
+      - "1.3.1.8 FAILED:"
+      - SETTroubleshoot package is installed
