@@ -1,0 +1,16 @@
+---
+# tasks file for roles/sudoer-deploy
+- name: Configure user deploy with password
+  ansible.builtin.user:
+    name: deploy
+    password: "{{ deploy_password }}"
+
+- name: Configure sudoer file for deploy
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers.d/deploy
+    state: present
+    regex: "^%deploy.*NOPASSWD: ALL$"
+    line: "%deploy ALL=(ALL) ALL"
+    validate: /usr/sbin/visudo -cf %s
+
+    

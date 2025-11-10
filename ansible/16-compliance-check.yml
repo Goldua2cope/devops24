@@ -1,7 +1,7 @@
 ---
 # Compliance checks according to CIS-AlmaLinux-OS-9-Benchmark
 - name: Security Compliance Checks
-  hosts: web
+  hosts: all
   become: true
   roles: 
     - CIS-Compliance-Checks

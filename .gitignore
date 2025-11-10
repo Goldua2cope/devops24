@@ -1,5 +1,2 @@
-.vagrant
-*.aux
-*.log
-*.pdf
-lab_environment/*_key*
+ansible_facts_websrv
+.venv

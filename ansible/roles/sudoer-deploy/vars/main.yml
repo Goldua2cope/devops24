@@ -1,0 +1,3 @@
+---
+# vars file for roles/sudoer-deploy
+deploy_password: $6$pbww74sUfd4Bqi/W$0e0S5o285LOF66VklpDLe0Cj5F9eAVMrHVD88Ks1ExRwNJsjYcCD0XCdGmsYIdktfokGCgjdM4ghuLdz9SnGO0
