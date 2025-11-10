@@ -1,0 +1,10 @@
+---
+- name: Anagrammer Playbook
+  hosts: localhost
+  vars: 
+    message: ""
+  tasks:
+    - name: Test angrammer module
+      anagrammer:
+        message: "{{ message }}"
+      

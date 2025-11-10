@@ -16,7 +16,7 @@ We will now write our own module, and run it through Ansible.
 
 Look at [Developing modules](https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_general.html)
 and create a module that
-
+f
 * Is called `anagrammer`
 * Takes one parameter, `message`, that is a string.
 * Returns two values:
@@ -83,3 +83,17 @@ you most often use in Ansible?
 
 What modules/filters are there in Ansible that can safely test for "truthy/falsy" values, and return something
 more stringent?
+
+Answer:  
+In python every value can be evaluated to either true/truthy or false/falsy. Objects are by default considered true unless they are evaluated to false with the __bool__() method or to 0 with the __len__() method. 
+
+Ansible has its own set of values that can be converted into booleans with the bool filter - such as True/yes/on/1 and false/no/off/0. Python wouldn't recognize yes/no or on/off. Ansible has filters that evaluates values pythonically - such as ansible.builtin.falsy and ansible.builtin.truthy. As of Ansible 2.10 ansible allows python like truthy and falsy checks - for example: "when: value is truthy"
+
+These modules/filters that can return more stringent boolean values: ansible.builtin.falsy, ansible.builtin.truthy and ansible.builtin.bool
+
+reference list:
+- https://testdriven.io/tips/ba9f859e-ab3d-4ff5-bc44-aebf70b13260/
+- https://docs.python.org/3/library/stdtypes.html
+- https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/bool_filter.html
+- https://docs.ansible.com/projects/ansible/latest/collections/ansible/builtin/truthy_test.html#ansible-collections-ansible-builtin-truthy-test
+- https://docs.ansible.com/projects/ansible/latest/playbook_guide/playbooks_tests.html
