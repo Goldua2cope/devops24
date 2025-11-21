@@ -1,5 +1,9 @@
 ---
 # tasks file for webserver
+
+## Installation and Configuration of Nginx HTTPS server:
+
+# python3-cryptography is needed to generate a certificate with community.crypto modules
 - name: Ensure nginx and python3-cryptography is installed
   ansible.builtin.package:
     name:
@@ -7,6 +11,7 @@
       - python3-cryptography
     state: present
 
+# Create directory structure for certificats and keys
 - name: Ensure the /etc/pki/nginx directory exists
   ansible.builtin.file:
     path: /etc/pki/nginx
@@ -18,33 +23,42 @@
   ansible.builtin.file:
     path: /etc/pki/nginx/private
     state: directory
+    # Private keys should not be readable for other users
     mode: "0700"
     owner: root
 
+# Creates a private key for signing the certificate
 - name: Ensure we have a private key for our certificate
   community.crypto.openssl_privatekey:
     path: /etc/pki/nginx/private/server.key
 
+# Creates a self-signed certificate using the private key
+# This is needed for HTTPS traffic encryption
 - name: Create a self-signed certificate
   community.crypto.x509_certificate:
     path: /etc/pki/nginx/server.crt
     privatekey_path: /etc/pki/nginx/private/server.key
     provider: selfsigned
 
+# Primary HTTPS configuration file
 - name: Copy webserver conf file
   ansible.builtin.copy:
-    src: "{{ filedir }}https.conf"
+    src: "{{ filedir }}/files/https.conf"
     dest: /etc/nginx/conf.d/https.conf
     mode: "0644"
     owner: root
 
+# HTTPS configuration file for example.internal
 - name: Render second webserver config file from jinja2 template
   ansible.builtin.template:
     src: "{{ filedir }}/templates/example.internal.conf.j2"
     dest: /etc/nginx/conf.d/example.internal.conf
     mode: "0755"
     owner: root
+  # Signal handler that file has changed
   notify: Restart nginx
+
+## Configure web content:
 
 - name: Create content directory
   ansible.builtin.file:
@@ -53,16 +67,20 @@
     mode: "0755"
     owner: root
 
+# Content of the website
 - name: Copy over index.html
   ansible.builtin.copy:
-    src: "{{ filedir }}index.html"
+    src: "{{ filedir }}/files/index.html"
     dest: /var/www/example.internal/html/index.html
     mode: "0644"
     owner: root
     setype: httpd_sys_content_t
+  # Signals handler that file has changed
   notify: Restart nginx
 
-- name: Create users
+## Create users on web server:
+
+- name: Create users on web server
   ansible.builtin.user:
     append: true
     name: "{{ item.name }}"
@@ -71,4 +89,4 @@
     password: "{{ user_password }}"
   loop: "{{ web_users }}"
   loop_control:
-    label: "{{ item.name }} created and added to {{ item.name }}"
+    label: "{{ item.name }} created and added to {{ item.name }}."

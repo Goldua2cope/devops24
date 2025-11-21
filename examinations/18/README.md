@@ -58,6 +58,29 @@ If you pass in 'fail me', it should fail like this:
         "reversed_message": "em liaf"
     }
 
+#### Output:
+```bash
+administrator@administrator-Precision-T1650:~/devops24/ansible$ ANSIBLE_LIBRARY=./library ansible -m anagrammer -a 'message="hello world"' localhost
+localhost | CHANGED => {
+    "changed": true,
+    "original_message": "hello world",
+    "reversed_message": "dlrow olleh"
+}
+administrator@administrator-Precision-T1650:~/devops24/ansible$ ANSIBLE_LIBRARY=./library ansible -m anagrammer -a 'message="sirap i paris"' localhost
+localhost | SUCCESS => {
+    "changed": false,
+    "original_message": "sirap i paris",
+    "reversed_message": "sirap i paris"
+}
+administrator@administrator-Precision-T1650:~/devops24/ansible$ ANSIBLE_LIBRARY=./library ansible -m anagrammer -a 'message="fail me"' localhost
+localhost | FAILED! => {
+    "changed": true,
+    "msg": "You required this to fail",
+    "original_message": "fail me",
+    "reversed_message": "em liaf"
+}
+```
+
 # QUESTION B
 
 Study the output of `ansible-config dump | grep -i module_path`. You will notice that there is a directory
@@ -68,6 +91,14 @@ that uses this module with the correct parameters.
 
 You don't need to worry about FQCN and namespaces in this examination.
 
+#### Answer:
+> The path where ansible looks for modules:
+
+```bash
+administrator@administrator-Precision-T1650:~/devops24/ansible$ ansible-config dump | grep -i module_path
+DEFAULT_MODULE_PATH(default) = ['/home/administrator/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+```
+
 # QUESTION C
 
 Create a playbook called `18-anagrammer.yml` that uses this module.
@@ -75,6 +106,24 @@ Create a playbook called `18-anagrammer.yml` that uses this module.
 Make the playbook use a default variable for the message that can be overriden by using something like:
 
     $ ansible-playbook --verbose --extra-vars message='"This is a whole other message"' 18-custom-module.yml
+
+#### Answer:
+
+```bash
+administrator@administrator-Precision-T1650:~/devops24/ansible$ ansible-playbook --verbose --extra-vars message='"This is a whole other message"' 18-anagrammer.yml 
+Using /home/administrator/devops24/ansible/ansible.cfg as config file
+
+PLAY [Anagrammer Playbook] ************************************************************************************************************************************************************************************************************
+
+TASK [Gathering Facts] ****************************************************************************************************************************************************************************************************************
+ok: [localhost]
+
+TASK [Test angrammer module] **********************************************************************************************************************************************************************************************************
+changed: [localhost] => {"changed": true, "original_message": "This is a whole other message", "reversed_message": "egassem rehto elohw a si sihT"}
+
+PLAY RECAP ****************************************************************************************************************************************************************************************************************************
+localhost                  : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0 
+```
 
 # BONUS QUESTION
 
@@ -84,12 +133,12 @@ you most often use in Ansible?
 What modules/filters are there in Ansible that can safely test for "truthy/falsy" values, and return something
 more stringent?
 
-Answer:  
-In python every value can be evaluated to either true/truthy or false/falsy. Objects are by default considered true unless they are evaluated to false with the __bool__() method or to 0 with the __len__() method. 
+#### Answer:  
+> In python every value can be evaluated to either true/truthy or false/falsy. Objects are by default considered true unless they are evaluated to false with the __bool__() method or to 0 with the __len__() method. 
 
-Ansible has its own set of values that can be converted into booleans with the bool filter - such as True/yes/on/1 and false/no/off/0. Python wouldn't recognize yes/no or on/off. Ansible has filters that evaluates values pythonically - such as ansible.builtin.falsy and ansible.builtin.truthy. As of Ansible 2.10 ansible allows python like truthy and falsy checks - for example: "when: value is truthy"
+> Ansible has its own set of values that can be converted into booleans with the bool filter - such as True/yes/on/1 and false/no/off/0. Python wouldn't recognize yes/no or on/off. Ansible has filters that evaluates values pythonically - such as ansible.builtin.falsy and ansible.builtin.truthy. As of Ansible 2.10 ansible allows python like truthy and falsy checks - for example: "when: value is truthy"
 
-These modules/filters that can return more stringent boolean values: ansible.builtin.falsy, ansible.builtin.truthy and ansible.builtin.bool
+> These modules/filters that can return more stringent boolean values: ansible.builtin.falsy, ansible.builtin.truthy and ansible.builtin.bool
 
 reference list:
 - https://testdriven.io/tips/ba9f859e-ab3d-4ff5-bc44-aebf70b13260/

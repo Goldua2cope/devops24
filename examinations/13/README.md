@@ -22,5 +22,5 @@ Also note the difference between `restarted` and `reloaded` in the [ansible.buil
 In order for `nginx` to pick up any configuration changes, it's enough to do a `reload` instead of
 a full `restart`.
 
-- restarted always restarts the service which may cause uneccessary unavailability
-- reloaded is more graceful in that it will reload configurations while the service is still running, and it starts the service if it isn't started already 
+#### Answer:
+> Restarted always restarts the service which may cause uneccessary unavailability. Reloaded is more graceful in that it will reload configurations while the service is still running, and it starts the service if it isn't started already 

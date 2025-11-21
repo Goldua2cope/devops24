@@ -57,6 +57,29 @@ It is up to you to implement the solution you feel works best.
 
 If you implement these tasks within one or more roles, you will gain enlightenment and additional karma.
 
+#### Output:
+```bash
+TASK [cis_compliance_checks : 3.3.1 Check if ip forwarding is disabled] ***************************************************************************************************************************************************************
+ok: [dbserver] => {
+    "changed": false,
+    "msg": [
+        "3.3.1 OK:",
+        "IP forwarding are disabled for ipv4 and ipv6"
+    ]
+}
+ok: [webserver] => {
+    "changed": false,
+    "msg": [
+        "3.3.1 OK:",
+        "IP forwarding are disabled for ipv4 and ipv6"
+    ]
+}
+
+PLAY RECAP ****************************************************************************************************************************************************************************************************************************
+dbserver                   : ok=12   changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+webserver                  : ok=12   changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+```
+
 # Resources
 
 For inspiration and as an example of an advanced project using Ansible for this, see for instance

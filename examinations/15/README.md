@@ -47,7 +47,22 @@ and
 
 will get you on the right track, for instance if you've changed any of the Prometheus configuration.
 
+#### Output:
+> See ansible/prometheusOutput.json. The status "health": "up" tells me that the servers are reachable. 
+
+> [Obstacle]: Ansible for some reason didn't recognize the ip addresses in the custom ansible/hosts file instead i needed to add the following to /etc/hosts:
+```
+192.168.121.176 example.internal webserver
+192.168.121.107 dbserver
+```
+
 # Resources and Information
 
 * https://github.com/prometheus/node_exporter/tree/master/examples/systemd
 * https://prometheus.io/docs/guides/node-exporter/
+
+
+#### Student notes:
+- podman ps -a
+- podman stop --all && podman rm --all
+- curl http://localhost:9090/api/v1/targets | jq '.' > prometheusOutput.json

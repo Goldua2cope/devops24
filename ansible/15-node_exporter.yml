@@ -1,16 +1,20 @@
 ---
+# Install Node-Exporter on both servers:
+
 - name: Install and Configure Node-Exporter
   hosts: all
   become: true
   vars:
     node_exporter_version: "1.10.2"
-    node_exporter_bin: /usr/sbin/node_exporter
+    node_exporter_bin: /usr/sbin/node_exporter # Path to place the Node Exporter binary later
     node_exporter_user: node_exporter
     node_exporter_group: "{{ node_exporter_user }}"
-    node_exporter_dir_conf: 
+    node_exporter_dir_conf:
       - /etc/sysconfig/node_exporter
       - /var/lib/node_exporter/textfile_collector
   tasks:
+
+    # Creates a dedicated user
     - name: Create node_exporter user
       ansible.builtin.user:
         name: "{{ node_exporter_user }}"
@@ -22,7 +26,7 @@
 
     - name: Download node exporter archive
       ansible.builtin.get_url:
-        url: "https://github.com/prometheus/node_exporter/releases/download/v{{ node_exporter_version }}/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
+        url: "https://github.com/prometheus/node_exporter/releases/download/v1.10.2/node_exporter-1.10.2.linux-amd64.tar.gz"
         dest: /tmp/
         mode: "0644"
 
@@ -30,9 +34,11 @@
       ansible.builtin.unarchive:
         src: "/tmp/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
         dest: /tmp/
+        # Indicates that the file already exists on target machine
         remote_src: true
 
-# This makes the program only available to node_export user
+# Moves binary to dedicated place
+# Ensures only the dedicated user can run and manage node-exporter
     - name: Copy node_exporter binary to /usr/sbin/node_exporter
       ansible.builtin.copy:
         src: "/tmp/node_exporter-{{ node_exporter_version }}.linux-amd64/node_exporter"
@@ -41,6 +47,8 @@
         group: "{{ node_exporter_group }}"
         mode: "0755"
         remote_src: true
+
+## Configure Node-Exporter:
 
     - name: Create config directories
       ansible.builtin.file:
@@ -52,6 +60,8 @@
         recurse: true
       loop: "{{ node_exporter_dir_conf }}"
 
+    # Service file configures how the service should be run
+    # Socket file defines where systemd listens for incoming connections
     - name: Copy service and socket files
       ansible.builtin.copy:
         src: "files/{{ item }}"
@@ -62,8 +72,12 @@
       loop:
         - node_exporter.service
         - node_exporter.socket
+      # Signals handler that file has changed
       notify: Restart and reload node exporter
 
+    # Holds the path to the textfile collector
+    # Used in service file as an environmental variable
+    # We can expose custom metrics through the textfile collector
     - name: Copy sysconfig file
       ansible.builtin.copy:
         src: files/sysconfig.node_exporter
@@ -71,17 +85,20 @@
         owner: root
         group: root
         mode: "0644"
+      # Signals handler that file has changed
       notify: Restart and reload node exporter
 
+  # Executes the handler now
   #   - name: Execute handlers now
   #     ansible.builtin.meta: flush_handlers
 
-    - name: Enable Firewall rules on dbserver
+    - name: Enable Firewall rules for Node-Exporter
       ansible.posix.firewalld:
         service: prometheus-node-exporter
         state: enabled
         immediate: true
         permanent: true
+      # Signals handler that service needs to be restarted/reloaded
       notify: Restart and reload node exporter
 
   handlers:

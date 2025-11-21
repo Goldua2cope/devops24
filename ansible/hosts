@@ -1,10 +1,9 @@
 [all:vars]
 ansible_user=deploy
 ansible_ssh_private_key_file=/home/administrator/Vagrant/deploy_key
-# ansible_become_pass='{{ deploy_become_pass }}'
 
 [db]
-dbsrv ansible_host=192.168.121.217 ansible_become_pass='{{ deploy_become_pass }}'
+dbserver ansible_host=192.168.121.107 
 
 [web]
-websrv ansible_host=192.168.121.17 ansible_become_pass='{{ deploy_become_pass }}'
+webserver ansible_host=192.168.121.176

@@ -1,14 +1,16 @@
 ---
+# Elevated privileges are needed to perform certain tasks inside the roles
 - name: Configure the web server(s) according to specs
   hosts: web
   become: true
   roles:
     - webserver
- 
+
 - name: Configure the database server(s) according to specs
   become: true
   hosts: db
+  # Vault holds the password for mariadbuser
   vars_files:
-    - mariadbpw.yml
+    - vault/mariadbpw.yml
   roles:
     - dbserver

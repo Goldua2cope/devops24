@@ -3,5 +3,5 @@
 - name: Security Compliance Checks
   hosts: all
   become: true
-  roles: 
-    - CIS-Compliance-Checks
+  roles:
+    - cis_compliance_checks

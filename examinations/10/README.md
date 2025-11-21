@@ -28,6 +28,13 @@ address of the virtual machine itself.
 
 Use the `ansible.builtin.template` module to accomplish this task.
 
+#### Answer:
+> Change the first two line to :
+```
+listen {{ ansible_facts.default_ipv4.address }}:80;
+listen {{ ansible_facts.default_ipv4.address }}:443 ssl;
+```
+
 # Resources and Documentation
 
 * https://docs.ansible.com/ansible/latest/collections/ansible/builtin/template_module.html

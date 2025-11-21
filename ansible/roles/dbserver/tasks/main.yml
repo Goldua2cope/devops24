@@ -1,34 +1,42 @@
 ---
 # tasks file for dbserver
 
+## MariaDB Setup :
+
+# python3-PyMySQL is a prerequisite for the mysql modules
 - name: Ensure MariaDB-server & python3-PyMySQL is installed
   ansible.builtin.package:
-    name: 
+    name:
       - mariadb-server
       - python3-PyMySQL
-    state: latest
+    state: present
 
-- name: Start mariadb at boot
+- name: Ensure mariadb starts at boot
   ansible.builtin.service:
     name: mariadb
     state: started
     enabled: true
 
-- name: Create Database "webappdb"
-  ansible.builtin.mysql_db:
+- name: Ensure database "webappdb" exists
+  community.mysql.mysql_db:
+    # mariadb can authenticate the root user through unix socket
+    # work around for the requirement for a ~/.my.cnf file(mysql connection configuration)
     login_unix_socket: "{{ socket_location }}"
+    # tries to log in with root user first
     check_implicit_admin: true
     name: webappdb
     state: present
 
 - name: Create Databseuser "webappuser"
-  ansible.builtin.mysql_user:
+  community.mysql.mysql_user:
     login_unix_socket: "{{ socket_location }}"
     check_implicit_admin: true
     name: webappuser
     password: "{{ mysql_user_password }}"
     priv: "webappdb.*:ALL"
     state: present
+
+## Copy of .md files:
 
 - name: Ensure /files directory exists
   ansible.builtin.file:
@@ -38,7 +46,7 @@
     mode: "0744"
     state: directory
   register: result
-  
+
 - name: Copy .md files with matching patterns
   become: true
   ansible.builtin.copy:

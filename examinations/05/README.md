@@ -81,10 +81,14 @@ The output from the playbook run contains something that looks suspiciously like
 a number of keys and values that come from the output of the Ansible module.
 
 What does the output look like the first time you run this playbook?
-    - on the first run it checks for file corruption with checksum md5sum
+
+#### Answer:
+> On the first run it checks for file corruption with checksum md5sum
 
 What does the output look like the second time you run this playbook?
-    - the second output is the same as the first one, but no md5sum checksum and no changes made since it recognizes the existens of the file 
+
+#### Answer:
+> On the second run the output is the same as the first one, but no md5sum checksum and no changes are made since the file already exist
 
 # QUESTION B
 
@@ -126,16 +130,31 @@ a self signed certificate.
 
     - To check if service is available: "sudo systemctl list-unit-files --type=service --state=enabled | grep nginx" OR "sudo systemctl list-units --type=service --all | grep nginx"
 
+#### Output:
+```
+administrator@administrator-Precision-T1650:~/devops24/ansible$ curl --insecure https://192.168.121.176
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+        <head>
+                <title>Test Page for the HTTP Server on AlmaLinux</title>
+                <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+                <style type="text/css">
+                        /*<![CDATA[*/
+                        body {
+...
+```
+
 # QUESTION C
 
-What is the disadvantage of having a task that _always_ makes sure a service is restarted, even if there is
-no configuration change?
-    - Unneccessary downtime
-    - Longer runtime especially if done on several servers
+What is the disadvantage of having a task that _always_ makes sure a service is restarted, even if there is no configuration change?
+
+#### Answer:
+> Unneccessary downtime and longer runtime especially if done on several servers
 
 # BONUS QUESTION
 
-There are at least two _other_ modules, in addition to the `ansible.builtin.service` module that can restart
-a `systemd` service with Ansible. Which modules are they?
-    - ansible.builtin.systemd_service module & ansible.builtin.sysvinit module
-    - the difference between these two and the service module is that the later acts as proxy to underlying service nabager module
+There are at least two _other_ modules, in addition to the `ansible.builtin.service` module that can restart a `systemd` service with Ansible. Which modules are they?
+
+#### Answer:
+> ansible.builtin.systemd_service module & ansible.builtin.sysvinit module. The difference between these two and the service module is that the latter acts as proxy to underlying service manager module

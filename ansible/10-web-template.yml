@@ -5,7 +5,7 @@
   tasks:
     - name: Copy over config file
       ansible.builtin.copy:
-        src: example.internal.conf
+        src: files/example.internal.conf
         dest: /etc/nginx/conf.d/example.internal.conf
         mode: "0755"
         owner: root
@@ -20,7 +20,7 @@
 
     - name: Copy over index.html
       ansible.builtin.copy:
-        src: ./index.html
+        src: files/index.html
         dest: /var/www/example.internal/html/index.html
         mode: "0644"
         owner: root
@@ -29,7 +29,7 @@
     # Ensure that webserver always listens to the external interface
     - name: Render config file from jinja2 template
       ansible.builtin.template:
-        src: ./templates/example.internal.conf.j2
+        src: templates/example.internal.conf.j2
         dest: /etc/nginx/conf.d/example.internal.conf
         mode: "0755"
         owner: root
@@ -40,4 +40,3 @@
         name: nginx.service
         state: restarted
         enabled: true
-

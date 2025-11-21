@@ -8,7 +8,7 @@
         name: nginx
         state: latest
 
-    - name: ensure nginx is started at boot
+    - name: Ensure nginx is started at boot
       ansible.builtin.service:
         name: nginx
         enabled: true

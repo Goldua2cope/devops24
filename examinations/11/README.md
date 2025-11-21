@@ -57,6 +57,12 @@ text in the playbook, but use the password hash, or encrypt the passwords using 
 
 There are various utilities that can output hashed passwords, check the FAQ for some pointers.
 
+#### Answer:
+> Encrypt password:
+```bash
+ansible all -i localhost, -m debug -a "msg={{ 'Linux4Ever' | password_hash('sha512','mysecretsalt') }}"
+```
+
 # BONUS BONUS QUESTION
 
 Add the real names of the users we added earlier to the GECOS field of each account. Google is your friend.
@@ -69,7 +75,7 @@ Add the real names of the users we added earlier to the GECOS field of each acco
 * https://docs.ansible.com/ansible/latest/reference_appendices/faq.html#how-do-i-generate-encrypted-passwords-for-the-user-module
 
 
-- #### Question to teacher:
-    - ansible all -i localhost, -m debug -a "msg={{ 'Linux4Ever' | password_hash('sha512', 'mysecretsalt') }}"
-        - why "all -i localhost needed"
+#### Question to teacher:
+- ansible all -i localhost, -m debug -a "msg={{ 'Linux4Ever' | password_hash('sha512', 'mysecretsalt') }}"
+    - why is "all -i localhost needed"
 

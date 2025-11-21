@@ -9,8 +9,10 @@
   ansible.builtin.lineinfile:
     path: /etc/sudoers.d/deploy
     state: present
+    # Finds the line with the pattern and replaces it 
     regex: "^%deploy.*NOPASSWD: ALL$"
     line: "%deploy ALL=(ALL) ALL"
+    # Validates the file with visudo after changes
     validate: /usr/sbin/visudo -cf %s
 
     

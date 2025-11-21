@@ -9,10 +9,10 @@
 - name: Check if unnecessary packages are installed
   ansible.builtin.assert:
     that: "'{{ item.package_name }}' not in ansible_facts.packages"
-    success_msg: 
+    success_msg:
       - "'{{ item.CIS_ID }}' OK:"
       - "'{{ item.package_name }}' is not installed"
-    fail_msg: 
+    fail_msg:
       - "'{{ item.CIS_ID }}' FAIL:"
       - "'{{ item.package_name }}' is installed"
   loop: "{{ unnecessary_packages }}"
@@ -20,18 +20,19 @@
 # Only checks status if an unneccessary package is installed
 - name: Check if unnecessary services are enabled or running
   ansible.builtin.assert:
-    that: 
+    that:
       - ansible_facts.services[item.service_name].status != 'enabled'
       - ansible_facts.services[item.service_name].state != 'running'
     success_msg:
       - "'{{ item.CIS_ID }}' OK:"
       - "'{{ item.package_name }}' with {{ item.service_name }}.service is stopped and disabled"
-    fail_msg: 
+    fail_msg:
       - "'{{ item.CIS_ID }}' FAIL:"
       - "'{{ item.package_name }}' with {{ item.service_name }}.service is running and/or enabled"
   loop: "{{ unnecessary_services }}"
   when: item.package_name in ansible_facts.packages
-  ignore_errors: true
+  # Fails this process without stopping the playbook
+  failed_when: false
 
 
 # - name: Show all services

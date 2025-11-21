@@ -3,7 +3,7 @@
   hosts: web
   become: true
   tasks:
-    - name: Stop and Disable nginx at startup
+    - name: Ensure nginx is disabled and not running
       ansible.builtin.service:
         name: nginx
         enabled: false

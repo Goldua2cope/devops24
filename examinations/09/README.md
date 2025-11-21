@@ -23,10 +23,12 @@ instead of as a plain text string in the playbook.
 When the [QUESTION A](#question-a) is solved, use `ansible-vault` to store the password in encrypted form, and make it possible to run the playbook as before, but with the password as an
 Ansible Vault secret instead.
 
-- #### Vault:
-  - ansible-vault create mariadbpw.yml
-  - ansible-vault edit mariadbpw.yml 
-  - ansible-playbook 08-mariadb.yml --ask-vault-pass
+#### Create Vault:
+```bash
+ansible-vault create vault/mariadbpw.yml
+ansible-vault edit vault/mariadbpw.yml 
+ansible-playbook 08-mariadb.yml --ask-vault-pass
+```
 
-- #### Questions to ask teacher:
-    - when would one want to only encrypt a string, it makes code much more bulky 
+#### Questions to ask teacher:
+  - when would one want to only encrypt a string, it makes code much more bulky 

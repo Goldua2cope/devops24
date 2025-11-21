@@ -1,16 +1,18 @@
 ---
 - name: Gather information about ip forwarding
-  ansible.builtin.command: 
+  ansible.builtin.command:
     cmd: sysctl net.ipv4.ip_forward net.ipv6.conf.all.forwarding
   register: result_ip_forwarding
+  # returns a changed status: false
+  changed_when: false
 
 - name: 3.3.1 Check if ip forwarding is disabled
   ansible.builtin.assert:
     # the values of net.ipv4.ip_forward & net.ipv6.conf.all.forwarding should be 0 if they are disabled
     that: "'1' not in result_ip_forwarding.stdout"
-    success_msg: 
+    success_msg:
       - "3.3.1 OK:"
       - IP forwarding are disabled for ipv4 and ipv6
-    fail_msg: 
+    fail_msg:
       - "3.3.1 FAILED:"
       - IP forwarding are enabled for ipv4 and ipv6

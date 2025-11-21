@@ -37,3 +37,30 @@ https://docs.ansible.com/ansible/latest/collections/community/mysql/index.html
     - SELECT user FROM webappdb.user;
     - SELECT CURRENT_USER();
     - SHOW DATABASES;
+
+#### Output: 
+
+> I logged in on the VM with "mysql -u webappuser -p webappdb". The user does not have privileges to access webappdb.user, in fact the database doens't seem to have any tables, which indicates that something is wrong with the way we installed mariadb. 
+
+```
+MariaDB [webappdb]> SELECT CURRENT_USER();
++----------------------+
+| CURRENT_USER()       |
++----------------------+
+| webappuser@localhost |
++----------------------+
+1 row in set (0.000 sec)
+
+MariaDB [webappdb]> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| webappdb           |
++--------------------+
+2 rows in set (0.001 sec)
+
+MariaDB [webappdb]> SELECT user FROM webappdb.user;
+ERROR 1146 (42S02): Table 'webappdb.user' doesn't exist
+MariaDB [webappdb]> 
+```

@@ -36,3 +36,9 @@ provided instead.
 To be able to use the password when running the playbooks later, you must use the `--ask-become-pass`
 option to `ansible` and `ansible-playbook` to provide the password. You can also place the password
 in a file, like with `ansible-vault`, or have it encrypted via `ansible-vault`.
+
+#### Output:
+```bash
+administrator@administrator-Precision-T1650:~/devops24/ansible$ ssh deploy@192.168.121.176 
+deploy@192.168.121.176's password: 
+```

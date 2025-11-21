@@ -5,7 +5,7 @@
   tasks:
     - name: Copy over example.internal.conf
       ansible.builtin.copy:
-        src: ./example.internal.conf
+        src: files/example.internal.conf
         dest: /etc/nginx/conf.d/example.internal.conf
         mode: "0755"
         owner: root
@@ -20,7 +20,7 @@
 
     - name: Copy over index.html
       ansible.builtin.copy:
-        src: ./index.html
+        src: files/index.html
         dest: /var/www/example.internal/html/index.html
         mode: "0644"
         owner: root

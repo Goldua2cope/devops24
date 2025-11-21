@@ -174,7 +174,9 @@ See https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_conditional
 There are several ways to accomplish this, and there is no _best_ way to do this with what we've done so far.
 
 Is this a good way to handle these types of conditionals? What do you think?
-  - It works in this case really well, because we are looking for changes in the example.internal.conf & html file 
+
+#### Answer:
+> It works in this case really well, because we are looking for changes in the example.internal.conf & html file 
 
 
 # BONUS QUESTION
@@ -185,9 +187,7 @@ might require a restart or reload of a service.
 Let's say the goal is to avoid restarts as much as possible to minimize downtime and interruptions; how
 would you like the flow to work?
 
-Describe in simple terms what your preferred task flow would look like, not necessarily implemented in
-Ansible, but in general terms.
-  - I would group my tasks in a way that minimal amount of restarts are needed 
-    - All tasks that don't need immediate restart of the service are executed first like configuration tasks
-    - Do reloads instead when possible
-    - If possible do only one restarts per service at the end
+Describe in simple terms what your preferred task flow would look like, not necessarily implemented in Ansible, but in general terms.
+
+#### Answer:
+> I would group my tasks in a way that minimal amount of restarts are needed. All tasks that don't need immediate restart of the service are executed first - i.e. configuration tasks. Reload services instead when possible and only one restart per service at the end. 

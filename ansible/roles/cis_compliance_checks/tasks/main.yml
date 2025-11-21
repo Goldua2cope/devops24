@@ -1,0 +1,9 @@
+---
+- name: Import 1-Initial-Setup
+  ansible.builtin.import_tasks: 1-Initial-Setup.yml
+
+- name: Import 2-Services
+  ansible.builtin.import_tasks: 2-Services.yml
+
+- name: Import 3-Network
+  ansible.builtin.import_tasks: 3-Network.yml

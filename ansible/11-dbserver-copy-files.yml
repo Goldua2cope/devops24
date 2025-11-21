@@ -3,7 +3,7 @@
   hosts: db
   vars:
     wd: /home/deploy/files
-  tasks: 
+  tasks:
     - name: Ensure /files directory exists
       ansible.builtin.file:
         path: "{{ wd }}"

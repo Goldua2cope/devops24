@@ -12,12 +12,12 @@
         gecos: "Alan Turing"
       - name: "edijkstra"
         groups: "tcpdump"
-        gecos: "Edsger W. Dijkstra" 
+        gecos: "Edsger W. Dijkstra"
       - name: "ghopper"
         groups: "wheel,audio"
         gecos: "Grace Hopper"
     user_password: "$6$rounds=656000$mysecretsalt$0kxgm8HEMKupwaiqsqyATObY7jRM5oavpLGUE4vZvqSbK24mUDZqHPaRl9hybNYG5Oi1pIaJH9.vtHl4f9pks0"
-  tasks: 
+  tasks:
     - name: Create users
       ansible.builtin.user:
         append: true
@@ -32,6 +32,3 @@
     # - name: Test print
     #   ansible.builtin.debug:
     #     msg: "{{ web_users.0.name }} and {{ web_users.0.groups }}"
-
-    
-

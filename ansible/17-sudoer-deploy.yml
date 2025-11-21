@@ -2,7 +2,5 @@
 - name: Configure deploy sudo priviliges
   hosts: all
   become: true
-  vars_files: 
-    - become_pass.yml
-  roles: 
-    - sudoer-deploy
+  roles:
+    - sudoer_deploy
