@@ -13,7 +13,7 @@
       - "'{{ item.CIS_ID }}' OK:"
       - "'{{ item.package_name }}' is not installed"
     fail_msg:
-      - "'{{ item.CIS_ID }}' FAIL:"
+      - "'{{ item.CIS_ID }}' FAILED:"
       - "'{{ item.package_name }}' is installed"
   loop: "{{ unnecessary_packages }}"
 
@@ -27,7 +27,7 @@
       - "'{{ item.CIS_ID }}' OK:"
       - "'{{ item.package_name }}' with {{ item.service_name }}.service is stopped and disabled"
     fail_msg:
-      - "'{{ item.CIS_ID }}' FAIL:"
+      - "'{{ item.CIS_ID }}' FAILED:"
       - "'{{ item.package_name }}' with {{ item.service_name }}.service is running and/or enabled"
   loop: "{{ unnecessary_services }}"
   when: item.package_name in ansible_facts.packages
